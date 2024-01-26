@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'cafenegrar.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        "NAME": "negrardatabase",
+        "NAME": "railway",
         "USER": "postgres",
-        "PASSWORD": "Yuki2115$",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "PASSWORD": "EafBGEf-Df-3-CEEdaeDgD*GE6a2AG*g",
+        "HOST": "roundhouse.proxy.rlwy.net",
+        "PORT": "10012",
     }
 }
 
