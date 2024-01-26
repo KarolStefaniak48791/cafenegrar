@@ -1,0 +1,16 @@
+annotated-types==0.6.0
+asgiref==3.7.2
+beautifulsoup4==4.12.2
+Django==4.2.1
+django-bootstrap-datepicker-plus==5.0.5
+django-bootstrap4==23.4
+django-debug-toolbar==4.2.0
+Pillow==10.1.0
+psycopg2==2.9.9
+psycopg2-binary==2.9.9
+pydantic==2.5.3
+pydantic_core==2.14.6
+soupsieve==2.5
+sqlparse==0.4.4
+typing_extensions==4.9.0
+tzdata==2023.3
