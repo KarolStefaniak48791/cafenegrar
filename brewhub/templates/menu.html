@@ -1,0 +1,89 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <title>
+      {% block title %}
+        Menu
+      {% endblock %}
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rouge+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
+  </head>
+  <body>
+    {% include "navbar.html" %}
+    <div class="banner">
+        <h1>Menu</h1>
+    </div>
+    <section class="menu-section">
+        <form method="post" action="{% url 'order_view' %}" class="container-all">
+            {% csrf_token %}
+            <div class="menu-container" style="width: 100%;">
+                {% for coffee in coffees %}
+                    {% if forloop.counter0|divisibleby:3 %}
+                        <div class="coffee-container-row">
+                    {% endif %}
+
+                    <div class="coffee-container" data-price="{{ coffee.price }}">
+                        <div class="coffee-image-container"><img class="coffee-image" src="{% static coffee.image %}"></div>
+                        <div class="coffee-text-container">
+                            <h1 class="coffee-name">{{ coffee.name }}</h1>
+                            <p class="coffee-desc">{{ coffee.description }}</p>
+                            <div class="order-container">
+                                <h2 class="coffee-price">Cena: {{ coffee.price }}zł</h2>
+                                <div class="custom-select">
+                                    <select name="coffees" class="selector" style="border: none; background-color: transparent; color: #240000;">
+                                        {% for x in amount %}
+                                        <option value="{{ coffee.id }}:{{ x }}">{{ x }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="zamawianie-container">
+                <h2 class="kwota-calkowita">Łączna kwota: <span id="total-amount">0</span> zł</h2>
+                <button type="submit" class="zamawianieBTN">Złóż zamówienie</button>
+            </div>
+        </form>
+    </section>
+    {% include "footer.html" %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const coffeeContainers = document.querySelectorAll('.coffee-container');
+            const totalAmountElement = document.getElementById('total-amount');
+            coffeeContainers.forEach(function (container) {
+                const selectElement = container.querySelector('.selector');
+                selectElement.selectedIndex = 0;
+                selectElement.addEventListener('change', function () {
+                    updateTotalAmount();
+                });
+            });
+            function updateTotalAmount() {
+                let totalAmount = 0;
+                coffeeContainers.forEach(function (container) {
+                    const price = parseFloat(container.dataset.price);
+                    const selectedValue = container.querySelector('.selector').value;
+                    const quantity = parseInt(selectedValue.split(":")[1]);
+                    totalAmount += price * quantity;
+                });
+                totalAmountElement.textContent = totalAmount.toFixed(2);
+            }
+        });
+    </script>
+  </body>
